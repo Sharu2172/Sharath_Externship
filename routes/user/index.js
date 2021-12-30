@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 
-routes.get('/user', (req, res) => {
+routes.get('/', (req, res) => {
     res.send('User Page');
 })
 
