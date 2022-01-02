@@ -4,17 +4,17 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-
+const { validateEmail, sendVerification } = require('./controllers/mail')
 // Custom variables declaration
 const app = express();
 const PORT = process.env.PORT || 3000;
 dotenv.config();
 const user = require(`${__dirname}/routes/user/index.js`);
-const auth = require(`${__dirname}/routes/auth/index.js`);
+const auth = require(`${__dirname}/routes/login/index.js`);
 
 // Middlewares
 app.use(cors());
-app.use(logger('dev'));
+app.use(logger('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -26,6 +26,12 @@ app.get('/ping', (req, res) => {
 app.use('/user', user);
 
 app.use('/login', auth);
+
+app.get('/test', async (req, res) => {
+    const response = await sendVerification('dsharath217@gmail.com', 'App2172');
+    console.log(response);
+    return res.json(response);
+})
 
 app.all('*', (req, res, next) => {
     return res.sendStatus(404);
